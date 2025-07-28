@@ -22,6 +22,7 @@ We leverage [Sentence Transformers](https://www.sbert.net/) to compute contextua
 ### 🛠️ Heuristic Features
 Each line of text is scored using the following heuristic features:
 
+```
 | Heuristic Feature         | Role in Detection                                              |
 |--------------------------|----------------------------------------------------------------|
 | **Font Size**             | Larger font often implies higher heading level (e.g., H1).     |
@@ -31,14 +32,13 @@ Each line of text is scored using the following heuristic features:
 | **Text Length**           | Very long lines are penalized (not likely headings).           |
 | **List/Bullet Detection** | Filters out numbered/bulleted content (`1.`, `•`, `a)`, etc.). |
 
-The combination of these rules and semantic embeddings allows for a more accurate classification of document structure, even across languages and diverse formatting styles.
 ```
+The combination of these rules and semantic embeddings allows for a more accurate classification of document structure, even across languages and diverse formatting styles.
 
 
 ## Project Structure
 
 ```
-
 CHALLENGE\_1A/
 ├── sample-dataset/
 │   ├── pdfs/               # Place input PDFs here
@@ -50,7 +50,7 @@ CHALLENGE\_1A/
 ├── requirements.txt
 └── README.md
 
-````
+```
 
 
 ## Setup & Usage
