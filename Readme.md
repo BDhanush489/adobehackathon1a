@@ -1,94 +1,100 @@
-# Challenge 1a: PDF Processing Solution
+# PDF Heading Extractor (Challenge 1A)
 
-## Overview
-This project presents a solution for Challenge 1a of the Adobe India Hackathon 2025: "Connecting the Dots". The core objective is to build a PDF processing solution that extracts a structured outline, including the document title and headings (H1, H2, H3), from PDF files and outputs them in a specified JSON format. The solution is containerized using Docker and is designed to meet specific performance and resource constraints, focusing on on-device intelligence without external network calls.
+A containerized Python-based tool that semantically extracts and detects hierarchical headings (H1, H2, H3) from PDF documents with multilingual support.
 
+---
 
-## Solution Approach (process_pdfs.py)
+## Features
 
-The process_pdfs.py script is designed to extract structural information from PDF documents using PyMuPDF and generate a hierarchical outline in JSON format.
+- **Semantic Heading Detection**: Automatically identifies meaningful headings (H1, H2, H3) using contextual cues.
+- **Multilingual Support**: Utilizes `sentence-transformers` to understand and process PDFs in multiple languages.
+- **Dockerized**: Easily run in a containerized environment with no dependency conflicts.
+- **Folder-Based Input/Output**: Reads from a given input folder and writes the processed output to a designated output directory.
+- **Modular Design**: Easily extendable to include new models or formats (e.g., FastText support coming soon).
 
-*Key features include:*
+---
 
-  * *Font Analysis:* Analyzes font size and weight to identify potential headings. A higher score is assigned to larger and bolder text.
-  * *Centering Detection:* Prioritizes text that is centered, as this often indicates higher-level headings like a document title or H1.
-  * *List Item Filtering:* Implements logic to specifically exclude lines that appear to be list items (e.g., bullet points, numbered lists) from being classified as headings, even if they are bold.
-  * *Hierarchical Structuring:* Classifies detected headings into H1, H2, and H3 based on their calculated score relative to the highest-scoring candidate on the page.
-  * *JSON Output Generation:* Produces a JSON file for each PDF, containing the document title and an array of outline entries, each with its level, text, and page number (1-based index).
-  * *Schema Validation:* Validates the generated JSON output against sample-dataset/schema/schema.json to ensure it conforms to the required structure.
+## Project Structure
 
-## Models and Libraries Used
+```
 
-The solution utilizes the following Python libraries, as defined in requirements.txt:
+CHALLENGE\_1A/
+├── sample-dataset/
+│   ├── pdfs/               # Place input PDFs here
+│   ├── output/             # Output results saved here
+│   └── schema/             # Optional schema definitions
+├── Dockerfile
+├── docker-compose.yml
+├── process\_pdfs.py         # Core logic for PDF heading extraction
+├── requirements.txt
+└── README.md
 
-  * PyMuPDF (fitz): For robust PDF parsing and text extraction.
-  * jsonschema: For validating the generated JSON output against the provided schema.
-  * sentence-transformers, scikit-learn, transformers, torch: These are listed in requirements.txt from the provided context, suggesting potential future use for semantic analysis (e.g., in Round 1B) though not explicitly used for heading detection in process_pdfs.py for Round 1A. The solution adheres to the model size and CPU-only constraints.
+````
 
+---
 
-## Sample Docker Configuration
+## Setup & Usage
 
-The Dockerfile provided for this solution is:
+### Option 1: Run Using Docker (Recommended)
 
-dockerfile
-FROM --platform=linux/amd64 python:3.10-slim
+#### Step 1: Pull the Docker Image from Docker Hub
 
-WORKDIR /app
+```bash
+docker pull dhanush489/adobehackathon1a:1a
+````
 
-COPY process_pdfs.py .
-COPY requirements.txt .
+#### Step 2: Create Input and Output Folders
 
-RUN pip install --no-cache-dir -r requirements.txt
+```
+your-folder/
+├── input/         # Place PDFs to be processed here
+└── output/        # Processed results will appear here
+```
 
-CMD ["python", "process_pdfs.py"]
+#### Step 3: Run the Container
 
+```bash
+docker run --rm \
+    -v "$(pwd)/input:/app/sample-dataset/pdfs:ro" \
+    -v "$(pwd)/output:/app/sample-dataset/output" \
+    --network none \
+    dhanush489/adobehackathon1a:1a
+```
 
-## Output Format
+---
 
-Each PDF processed will generate a corresponding JSON file that strictly conforms to the schema defined in sample-dataset/schema/schema.json. An example output structure is:
+### Option 2: 🧪 Run Locally via Python
 
-json
-{
-  "title": "A Comprehensive Guide to Traditions and Culture in the South of France",
-  "outline": [
-    { "level": "H1", "text": "Introduction", "page": 1 },
-    { "level": "H2", "text": "Language and Literature", "page": 2},
-    { "level": "H3", "text": "Provençal Language", "page":2}
-  ]
-}
+#### Step 1: Clone the Repository
 
+```bash
+git clone https://github.com/your-username/pdf-heading-extractor.git
+cd pdf-heading-extractor
+```
 
-## Implementation Guidelines
+#### Step 2: Install Dependencies
 
-### Quick Start (Running Procedure) 
+```bash
+pip install -r requirements.txt
+```
 
-## Using Pre-built Docker Image
+#### Step 3: Process PDFs
 
-1.  *Navigate to a new Directory:*
-    bash
-    cd <your-working-directory>
-    
-2.  *Pull the pre-built Docker image:*
-    bash
-    docker pull dhanush489/adobehackathon1a:1a
-    
-3.  *Run the container*
-    bash
-    docker run --rm -v "C:\Path\to\input:/app/sample-dataset/pdfs:ro" \
-               -v "C:\Path\to\output:/app/sample-dataset/output" \
-               --network none dhanush489/adobehackathon1a:1a
+Make sure your input PDFs are in `sample-dataset/pdfs`, then run:
 
-        Replace C:\Path\to\input with the absolute path of your input PDF directory.
+```bash
+python process_pdfs.py
+```
 
-        Replace C:\Path\to\output with the directory where output JSONs should be saved.
+Output will be saved in `sample-dataset/output`.
 
-### Validation Checklist
+---
 
-  * All PDFs in the input directory are processed.
-  * JSON output files are generated for each PDF in the output directory.
-  * Output format matches the required structure (title, outline with level, text, page).
-  * Output conforms to the schema in sample-dataset/schema/schema.json.
-  * Processing completes within 10 seconds for 50-page PDFs.
-  * Solution works without internet access during execution.
-  * Memory usage stays within the 16GB limit.
-  * Compatible with AMD64 architecture.
+## 🔮 Future Enhancements
+
+* ✅ Integrate [FastText](https://fasttext.cc/) for lightweight language detection.
+* 🔍 Add OCR support for scanned PDFs to improve layout analysis.
+* 📊 Export heading data in structured formats (JSON, CSV, XML).
+* 📈 GUI or web interface for easier usage.
+
+---
