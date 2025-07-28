@@ -2,7 +2,6 @@
 
 A containerized Python-based tool that semantically extracts and detects hierarchical headings (H1, H2, H3) from PDF documents with multilingual support.
 
---
 
 ## Features
 
@@ -12,7 +11,6 @@ A containerized Python-based tool that semantically extracts and detects hierarc
 - **Folder-Based Input/Output**: Reads from a given input folder and writes the processed output to a designated output directory.
 - **Modular Design**: Easily extendable to include new models or formats (e.g., FastText support coming soon).
 
---
 
 ## 📚 Theoretical Overview
 
@@ -36,7 +34,6 @@ Each line of text is scored using the following heuristic features:
 The combination of these rules and semantic embeddings allows for a more accurate classification of document structure, even across languages and diverse formatting styles.
 ```
 
---
 
 ## Project Structure
 
@@ -55,7 +52,6 @@ CHALLENGE\_1A/
 
 ````
 
---
 
 ## Setup & Usage
 
@@ -110,7 +106,6 @@ python process_pdfs.py
 
 Output will be saved in `sample-dataset/output`.
 
---
 
 ## 🔮 Future Enhancements
 
