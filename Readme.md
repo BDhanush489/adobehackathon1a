@@ -2,7 +2,7 @@
 
 A containerized Python-based tool that semantically extracts and detects hierarchical headings (H1, H2, H3) from PDF documents with multilingual support.
 
----
+--
 
 ## Features
 
@@ -12,7 +12,31 @@ A containerized Python-based tool that semantically extracts and detects hierarc
 - **Folder-Based Input/Output**: Reads from a given input folder and writes the processed output to a designated output directory.
 - **Modular Design**: Easily extendable to include new models or formats (e.g., FastText support coming soon).
 
----
+--
+
+## 📚 Theoretical Overview
+
+To identify headings (H1, H2, H3) from PDF documents, we apply a combination of heuristic rules and semantic models:
+
+### 🧠 Semantic Understanding
+We leverage [Sentence Transformers](https://www.sbert.net/) to compute contextual sentence embeddings. These allow us to compare textual content semantically, ensuring multilingual support and meaning-based grouping of headings.
+
+### 🛠️ Heuristic Features
+Each line of text is scored using the following heuristic features:
+
+| Heuristic Feature         | Role in Detection                                              |
+|--------------------------|----------------------------------------------------------------|
+| **Font Size**             | Larger font often implies higher heading level (e.g., H1).     |
+| **Font Weight**           | Bold fonts are favored as headings.                            |
+| **Font Color**            | Consistent or distinct color is used as a visual cue for headings. |
+| **Center Alignment**      | Centered text receives a boost in heading score.               |
+| **Text Length**           | Very long lines are penalized (not likely headings).           |
+| **List/Bullet Detection** | Filters out numbered/bulleted content (`1.`, `•`, `a)`, etc.). |
+
+The combination of these rules and semantic embeddings allows for a more accurate classification of document structure, even across languages and diverse formatting styles.
+```
+
+--
 
 ## Project Structure
 
@@ -31,7 +55,7 @@ CHALLENGE\_1A/
 
 ````
 
----
+--
 
 ## Setup & Usage
 
@@ -61,8 +85,6 @@ docker run --rm \
     dhanush489/adobehackathon1a:1a
 ```
 
----
-
 ### Option 2: 🧪 Run Locally via Python
 
 #### Step 1: Clone the Repository
@@ -88,7 +110,7 @@ python process_pdfs.py
 
 Output will be saved in `sample-dataset/output`.
 
----
+--
 
 ## 🔮 Future Enhancements
 
@@ -97,4 +119,4 @@ Output will be saved in `sample-dataset/output`.
 * 📊 Export heading data in structured formats (JSON, CSV, XML).
 * 📈 GUI or web interface for easier usage.
 
----
+
