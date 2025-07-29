@@ -27,7 +27,7 @@ Each line of text is scored using the following heuristic features:
 |---------------------------|--------------------------------------------------------------------|
 | **Font Size**             | Larger font often implies higher heading level (e.g., H1).         |
 | **Font Weight**           | Bold fonts are favored as headings.                                |
-| **Font Color**            | Consistent or distinct color is used as a visual cue for headings. |
+| **Font Colour**            | Consistent or distinct color is used as a visual cue for headings. |
 | **Center Alignment**      | Centered text receives a boost in heading score.                   |
 | **Text Length**           | Very long lines are penalized (not likely headings).               |
 | **List/Bullet Detection** | Filters out numbered/bulleted content (`1.`, `•`, `a)`, etc.).     |
@@ -74,11 +74,11 @@ your-folder/
 #### Step 3: Run the Container
 
 ```bash
-docker run --rm \
-    -v "$(pwd)/input:/app/sample-dataset/pdfs:ro" \
-    -v "$(pwd)/output:/app/sample-dataset/output" \
-    --network none \
-    dhanush489/adobehackathon1a:1a
+docker run --rm ^
+  -v "%cd%\input:/app/sample-dataset/pdfs:ro" ^
+  -v "%cd%\output:/app/sample-dataset/output" ^
+  --network none ^
+  dhanush489/adobehackathon1a:1a
 ```
 
 ### Option 2: Run Locally via Python
